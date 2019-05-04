@@ -1,0 +1,24 @@
+version: '3.1'
+
+networks:
+  raspberry_network:
+    external: false
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.27.0.0/16"
+
+services:
+  debian:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: debian
+    tty: true
+    restart: ${RESTART_MODE}
+    ports:
+      - "2222:22"
+    networks:
+      raspberry_network:
+        ipv4_address: "172.27.0.2"
